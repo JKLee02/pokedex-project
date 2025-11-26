@@ -38,6 +38,10 @@ export default function PokedexPage() {
         setPokemon((prev) =>
           pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon]
         );
+        setFilteredPokemon((prev) =>
+          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon]
+        );
+
         setHasMore(data.hasMore);
       } else {
         setHasMore(false);
@@ -54,20 +58,25 @@ export default function PokedexPage() {
   }, [page]);
 
   // Search Query for Pokemons
-  useEffect(() => {
+  const handleSearch = (e) => {
+    e.preventDefault();
+
     if (searchQuery.trim() === "") {
       setFilteredPokemon(pokemon);
     } else {
       const filtered = pokemon.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
       setFilteredPokemon(filtered);
     }
-  }, [searchQuery, pokemon]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
   };
+
+  // Search reset when input empty
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredPokemon(pokemon);
+    }
+  }, [searchQuery, pokemon]);
 
   // Load More button for pagination
   const loadMore = () => {
