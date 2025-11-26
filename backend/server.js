@@ -7,7 +7,7 @@ app.use(cors());
 
 app.get("/api/pokemons", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 20;
+  const limit = parseInt(req.query.limit) || 18;
   const offset = (page - 1) * limit;
 
   try {
@@ -42,7 +42,6 @@ app.get("/api/pokemons", async (req, res) => {
       limit,
       hasMore: !!response.data.next,
     });
-
   } catch (error) {
     console.error("Error fetching Pokémon:", error.message);
     res.status(500).json({ error: "Failed to fetch Pokémon" });

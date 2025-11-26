@@ -2,7 +2,13 @@
 const nextConfig = {
   /* config options here */
   images: {
-    domains: ["raw.githubusercontent.com"], // external domain for the pokemon image
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com", // For pokemon images
+        pathname: "/**",
+      },
+    ],
   },
   reactCompiler: true,
 };
