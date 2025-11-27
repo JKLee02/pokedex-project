@@ -12,11 +12,7 @@ export default function PokedexPage() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const carouselImages = [
-    { id: 1, query: "pokemon adventure banner" },
-    { id: 2, query: "pokemon battle scene" },
-    { id: 3, query: "pokemon trainer journey" },
-  ];
+  const carouselImages = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,7 +26,7 @@ export default function PokedexPage() {
     try {
       // Express.js backend endpoint from server.js
       const response = await fetch(
-        `http://localhost:3001/api/pokemons?page=${pageNum}&limit=18`
+        `http://localhost:3001/api/pokemons?page=${pageNum}&limit=36`
       );
       const data = await response.json();
 
@@ -38,10 +34,6 @@ export default function PokedexPage() {
         setPokemon((prev) =>
           pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon]
         );
-        setFilteredPokemon((prev) =>
-          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon]
-        );
-
         setHasMore(data.hasMore);
       } else {
         setHasMore(false);
@@ -58,25 +50,20 @@ export default function PokedexPage() {
   }, [page]);
 
   // Search Query for Pokemons
-  const handleSearch = (e) => {
-    e.preventDefault();
-
+  useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredPokemon(pokemon);
     } else {
       const filtered = pokemon.filter((p) =>
-        p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredPokemon(filtered);
     }
-  };
-
-  // Search reset when input empty
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredPokemon(pokemon);
-    }
   }, [searchQuery, pokemon]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+  };
 
   // Load More button for pagination
   const loadMore = () => {
@@ -124,15 +111,15 @@ export default function PokedexPage() {
               {carouselImages.map((img) => (
                 <div key={img.id} className="carousel-slide">
                   <Image
-                    src={`/images/carousel${img.id}.jpg`}
+                    src={
+                      `/images/carousel${img.id}.jpg` ||
+                      `/images/carousel${img.id}.png`
+                    }
                     alt={`Carousel ${img.id}`}
-                    width={800}
-                    height={256}
+                    fill
+                    style={{ objectFit: "cover" }}
                     className="carousel-image"
                   />
-                  <div className="carousel-overlay">
-                    <h2 className="carousel-title">CAROUSEL BANNER</h2>
-                  </div>
                 </div>
               ))}
             </div>
@@ -154,10 +141,20 @@ export default function PokedexPage() {
           {/* Two Static Banners */}
           <div className="static-banners">
             <div className="static-banner">
-              <h3 className="banner-title">Static Banner</h3>
+              <Image
+                src={`/images/placeholder.svg`}
+                alt={`Left side of static image`}
+                fill
+                style={{ objectFit: "cover" }}
+              />
             </div>
             <div className="static-banner">
-              <h3 className="banner-title">Static Banner</h3>
+              <Image
+                src={`/images/placeholder.svg`}
+                alt={`Left side of static image`}
+                fill
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
         </div>
@@ -169,7 +166,12 @@ export default function PokedexPage() {
           {/* Left Static Image */}
           <div className="side-image left">
             <div className="side-image-content">
-              <p className="side-text left-text">Static Image</p>
+              <Image
+                src={`/images/placeholder.svg`}
+                alt={`Left side of static image`}
+                fill
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
 
@@ -185,9 +187,6 @@ export default function PokedexPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="search-input"
                 />
-                <button type="submit" className="search-button">
-                  Search
-                </button>
               </form>
             </div>
 
@@ -197,14 +196,11 @@ export default function PokedexPage() {
                 <div key={`${poke.id}-${index}`} className="pokemon-card">
                   <div className="pokemon-content">
                     <Image
-                      src={
-                        poke.image ||
-                        `/placeholder.svg?height=80&width=80&query=${poke.name}`
-                      }
+                      src={poke.image || `./images/placeholder.svg`}
                       alt={poke.name}
                       width={80}
                       height={80}
-                      className="pokemon-sprite"
+                      className="pokemon-images"
                     />
                     <div className="pokemon-info">
                       <h3 className="pokemon-name">{poke.name}</h3>
@@ -251,7 +247,12 @@ export default function PokedexPage() {
           {/* Right Static Image */}
           <div className="side-image right">
             <div className="side-image-content">
-              <p className="side-text right-text">Static Image</p>
+              <Image
+                src={`/images/pikachu.png`}
+                alt={`right side of static image`}
+                fill
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
         </div>

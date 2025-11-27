@@ -5,7 +5,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Pokédex - Browse All Pokemon",
+  title: "Pokédex App",
   description:
     "Browse and search through all Pokemon with detailed information",
   icons: {
