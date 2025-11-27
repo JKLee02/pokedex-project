@@ -2,12 +2,12 @@
 
 body {
   font-family: "Rubik", sans-serif;
+  background-color: #f9fafb;
 }
 
 /* Container Styles */
 .pokedex-container {
   min-height: 100vh;
-  background-color: #f9fafb;
 }
 
 /* Top Section */
