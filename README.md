@@ -19,35 +19,35 @@ Features include search, load more, Pokémon types with coloured badges and a re
   cd pokedex-project
   ```
 
-  ## Frontend
+## Frontend
 
-  ### 1. Install the dependencies for frontend
+### 1. Install the dependencies for frontend
 
-  ```
-  cd frontend
-  npm install
-  ```
+```
+cd frontend
+npm install
+```
 
-  ### 2. Run the development server
+### 2. Run the development server
 
-  ```
-  npm run dev
-  ```
+```
+npm run dev
+```
 
-  ## Backend
+## Backend
 
-  ### 1. Install the dependencies for backend
+### 1. Install the dependencies for backend
 
-  ```
-  cd backend
-  npm install
-  ```
+```
+cd backend
+npm install
+```
 
-  ### 2. Start the backend server
+### 2. Start the backend server
 
-  ```
-  node server.js
-  ```
+```
+node server.js
+```
 
 ## 2. API Documentation
 
@@ -58,7 +58,7 @@ It supports pagination and returns Pokémon details including name, image, types
 
 The API is then utilized by the Next.js frontend to display Pokémon with search and load more functionality.
 
--Base URL:
+**Base URL**:
 
 ```
 http://localhost:3001/api
@@ -74,14 +74,73 @@ Used to fetch a list of Pokémon with pagination.
 
 ### Query Parameters
 
-| Parameter | Type   | Default | Description             |
-| --------- | ------ | ------- | ----------------------- |
-| `page`    | number | 1       | Page number to fetch    |
-| `limit`   | number | 36      | No. of Pokémon per page |
+| Parameter | Type   | Default | Description                |
+| --------- | ------ | ------- | -------------------------- |
+| `page`    | number | 1       | Page number to fetch       |
+| `limit`   | number | 36      | Number of Pokémon per page |
 
-Example Request:
+**Example Request**:
 
 ```
 GET http://localhost:3001/api/pokemons?page=1&limit=36
 ```
 
+**Successful Response in JSON**
+
+```
+{
+  "pokemon": [
+    {
+      "name": "bulbasaur",
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+      "types": [
+        "grass",
+        "poison"
+      ],
+      "height": 7,
+      "weight": 69
+    },
+    ...
+  ],
+  "page": 1,
+  "limit": 36,
+  "hasMore": true
+}
+```
+
+### Response fields
+
+| Field            | Type    | Description                                      |
+| ---------------- | ------- | ------------------------------------------------ |
+| `pokemon`        | array   | List of Pokémon objects                          |
+| `pokemon.name`   | string  | Pokémon's name                                   |
+| `pokemon.image`  | string  | URL to Pokémon image                             |
+| `pokemon.types`  | array   | Pokémon types (may have multiple)                |
+| `pokemon.height` | number  | Height of Pokémon (in decimetres)                |
+| `pokemon.weight` | number  | Weight of Pokémon (in hectograms)                |
+| `page`           | number  | Current page number                              |
+| `limit`          | number  | Number of Pokémon per page                       |
+| `hasMore`        | boolean | Indicates if more Pokémon are available to fetch |
+
+### Error Response
+
+```
+{
+  "error": "Failed to fetch Pokémon"
+}
+```
+
+### Example Usage (in JavaScript)
+
+```
+async function getPokemon() {
+  try {
+    const response = await fetch('http://localhost:3001/api/pokemons?page=1&limit=36');
+    const data = await response.json();
+    console.log(data.pokemon);
+  } catch (error) {
+    console.error("Error fetching Pokémon:", error);
+  }
+}
+getPokemon();
+```
