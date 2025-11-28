@@ -30,7 +30,7 @@
 .carousel-indicators {
   position: absolute;
   bottom: 1rem;
-  left: 50%;
+  left: 45%;
   display: flex;
   gap: 0.5rem;
 }
