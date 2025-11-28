@@ -19,35 +19,35 @@ Features include search, load more, Pokémon types with coloured badges and a re
   cd pokedex-project
   ```
 
-## Frontend
+  ## Frontend
 
-### 1. Install the dependencies for frontend
+  ### 1. Install the dependencies for frontend
 
-```
-cd frontend
-npm install
-```
+  ```
+  cd frontend
+  npm install
+  ```
 
-### 2. Run the development server
+  ### 2. Run the development server
 
-```
-npm run dev
-```
+  ```
+  npm run dev
+  ```
 
-## Backend
+  ## Backend
 
-### 1. Install the dependencies for backend
+  ### 1. Install the dependencies for backend
 
-```
-cd backend
-npm install
-```
+  ```
+  cd backend
+  npm install
+  ```
 
-### 2. Start the backend server
+  ### 2. Start the backend server
 
-```
-node server.js
-```
+  ```
+  node server.js
+  ```
 
 ## 2. API Documentation
 
