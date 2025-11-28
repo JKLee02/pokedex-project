@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import Carousel from "./components/Carousel";
+import StaticBanners from "./components/StaticBanners";
+import SideImage from "./components/SideImage";
+import PokemonGrid from "./components/PokemonGrid";
 
 export default function PokedexPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -74,91 +77,14 @@ export default function PokedexPage() {
     }
   };
 
-  // Colors for Different Pokemon Type
-  const getTypeColor = (type) => {
-    const colors = {
-      grass: "#dcfce7",
-      poison: "#f3e8ff",
-      fire: "#fed7aa",
-      flying: "#e0f2fe",
-      electric: "#fef3c7",
-      water: "#dbeafe",
-      bug: "#ecfccb",
-      normal: "#f3f4f6",
-      fairy: "#fce7f3",
-      fighting: "#fee2e2",
-      psychic: "#fae8ff",
-      rock: "#fafaf9",
-      ghost: "#e0e7ff",
-      ice: "#cffafe",
-      dragon: "#ede9fe",
-      dark: "#f4f4f5",
-      steel: "#f1f5f9",
-      ground: "#fef3c7",
-    };
-    return colors[type.toLowerCase()] || "#f3f4f6";
-  };
-
   return (
     <div className="pokedex-container">
       {/* Top Section - Carousel and Static Banners */}
       <div className="top-section">
         <div className="top-grid">
-          {/* Carousel Banner */}
-          <div className="carousel-container">
-            <div
-              className="carousel-track"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {carouselImages.map((img) => (
-                <div key={img.id} className="carousel-slide">
-                  <Image
-                    src={
-                      `/images/carousel${img.id}.jpg` ||
-                      `/images/carousel${img.id}.png`
-                    }
-                    alt={`Carousel ${img.id}`}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    className="carousel-image"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Carousel indicators */}
-            <div className="carousel-indicators">
-              {carouselImages.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`indicator ${
-                    index === currentSlide ? "active" : ""
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Two Static Banners */}
-          <div className="static-banners">
-            <div className="static-banner">
-              <Image
-                src={`/images/placeholder.svg`}
-                alt={`1st static banner`}
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <div className="static-banner">
-              <Image
-                src={`/images/placeholder.svg`}
-                alt={`2nd static banner`}
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-          </div>
+          {/* Carousel and static banners components */}
+          <Carousel />
+          <StaticBanners />
         </div>
       </div>
 
@@ -166,101 +92,27 @@ export default function PokedexPage() {
       <div className="middle-section">
         <div className="middle-grid">
           {/* Left Static Image */}
-          <div className="side-image left">
-            <div className="side-image-wrapper">
-              <div className="side-image-content">
-                <Image
-                  src={`/images/placeholder.svg`}
-                  alt={`Left side of static image`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-            </div>
-          </div>
+          <SideImage
+            src="/images/placeholder.svg"
+            alt="Left side of static image"
+          />
 
           {/* Center - Scrollable Pokemon List */}
-          <div className="pokemon-section">
-            {/* Search Bar */}
-            <div className="search-container">
-              <form onSubmit={handleSearch} className="search-form">
-                <input
-                  type="text"
-                  placeholder="Pokemon Name"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-input"
-                />
-              </form>
-            </div>
-
-            {/* Pokemon Grid */}
-            <div className="pokemon-grid">
-              {filteredPokemon.map((poke, index) => (
-                <div key={`${poke.id}-${index}`} className="pokemon-card">
-                  <div className="pokemon-content">
-                    <Image
-                      src={poke.image || `./images/placeholder.svg`}
-                      alt={poke.name}
-                      width={80}
-                      height={80}
-                      className="pokemon-images"
-                    />
-                    <div className="pokemon-info">
-                      <h3 className="pokemon-name">{poke.name}</h3>
-                      <div className="pokemon-types">
-                        {poke.types &&
-                          poke.types.map((type, idx) => (
-                            <span
-                              key={idx}
-                              className="type-badge"
-                              style={{ backgroundColor: getTypeColor(type) }}
-                            >
-                              {type}
-                            </span>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Load More Button */}
-            {hasMore && (
-              <div className="load-more-container">
-                <button
-                  onClick={loadMore}
-                  disabled={loading}
-                  className="load-more-button"
-                >
-                  {loading ? "Loading..." : "Load More"}
-                </button>
-              </div>
-            )}
-
-            {!hasMore && filteredPokemon.length > 0 && (
-              <p className="message">No more Pokémon to load</p>
-            )}
-
-            {filteredPokemon.length === 0 && !loading && (
-              <p className="message">No Pokémon found</p>
-            )}
-          </div>
+          <PokemonGrid
+            pokemon={filteredPokemon}
+            handleSearch={handleSearch}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            loadMore={loadMore}
+            loading={loading}
+            hasMore={hasMore}
+          />
 
           {/* Right Static Image */}
-          <div className="side-image right">
-            <div className="side-image-wrapper">
-              <div className="side-image-content">
-                <Image
-                  src={`/images/pikachu.png`}
-                  alt={`right side of static image`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-            </div>
-          </div>
+          <SideImage
+            src="/images/pikachu.png"
+            alt="right side of static image"
+          />
         </div>
       </div>
     </div>

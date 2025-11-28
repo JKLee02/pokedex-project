@@ -1,0 +1,20 @@
+/* Side Images */
+@media (min-width: 1024px) {
+  .side-image {
+    display: block;
+  }
+}
+
+.side-image-wrapper {
+  position: sticky;
+  top: 0;
+}
+
+.side-image-content {
+  position: relative;
+  border-radius: 0.5rem;
+  height: 25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
