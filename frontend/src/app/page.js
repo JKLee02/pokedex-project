@@ -12,6 +12,7 @@ export default function PokedexPage() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  // Carousel images auto rotation
   const carouselImages = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function PokedexPage() {
     return () => clearInterval(interval);
   });
 
+  // Fetch backend API
   const fetchPokemon = async (pageNum) => {
     setLoading(true);
     try {
@@ -143,7 +145,7 @@ export default function PokedexPage() {
             <div className="static-banner">
               <Image
                 src={`/images/placeholder.svg`}
-                alt={`Left side of static image`}
+                alt={`1st static banner`}
                 fill
                 style={{ objectFit: "cover" }}
               />
@@ -151,7 +153,7 @@ export default function PokedexPage() {
             <div className="static-banner">
               <Image
                 src={`/images/placeholder.svg`}
-                alt={`Left side of static image`}
+                alt={`2nd static banner`}
                 fill
                 style={{ objectFit: "cover" }}
               />
@@ -165,13 +167,15 @@ export default function PokedexPage() {
         <div className="middle-grid">
           {/* Left Static Image */}
           <div className="side-image left">
-            <div className="side-image-content">
-              <Image
-                src={`/images/placeholder.svg`}
-                alt={`Left side of static image`}
-                fill
-                style={{ objectFit: "cover" }}
-              />
+            <div className="side-image-wrapper">
+              <div className="side-image-content">
+                <Image
+                  src={`/images/placeholder.svg`}
+                  alt={`Left side of static image`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
           </div>
 
@@ -246,13 +250,15 @@ export default function PokedexPage() {
 
           {/* Right Static Image */}
           <div className="side-image right">
-            <div className="side-image-content">
-              <Image
-                src={`/images/pikachu.png`}
-                alt={`right side of static image`}
-                fill
-                style={{ objectFit: "cover" }}
-              />
+            <div className="side-image-wrapper">
+              <div className="side-image-content">
+                <Image
+                  src={`/images/pikachu.png`}
+                  alt={`right side of static image`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+// GET API endpoint
 app.get("/api/pokemons", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 36;
@@ -48,6 +49,7 @@ app.get("/api/pokemons", async (req, res) => {
   }
 });
 
+// Port listening
 const PORT = 3001;
 app.listen(PORT, () =>
   console.log(`Backend running on http://localhost:${PORT}`)

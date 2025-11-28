@@ -53,24 +53,24 @@ Features include search, load more, Pokémon types with coloured badges and a re
 
 ## Overview
 
-The Pokedex API provides Pokémon data fetched from the [PokéAPI](https://pokeapi.co/).
+The Pokedex backend API provides Pokémon data fetched from the [PokéAPI](https://pokeapi.co/).
 It supports pagination and returns Pokémon details including name, image, types, height, and weight.
 
 The API is then utilized by the Next.js frontend to display Pokémon with search and load more functionality.
 
-**Base URL**:
+**Base URL**
 
 ```
 http://localhost:3001/api
 ```
 
-## Endpoints
+## Endpoint
+
+Used to fetch a list of Pokémon with pagination.
 
 ```
 GET /pokemons
 ```
-
-Used to fetch a list of Pokémon with pagination.
 
 ### Query Parameters
 
@@ -79,7 +79,7 @@ Used to fetch a list of Pokémon with pagination.
 | `page`    | integer | 1       | Page number to fetch       |
 | `limit`   | integer | 36      | Number of Pokémon per page |
 
-**Example Request**:
+**Example Request**
 
 ```
 GET http://localhost:3001/api/pokemons?page=1&limit=36
