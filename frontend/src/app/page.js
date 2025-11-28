@@ -7,23 +7,12 @@ import SideImage from "./components/SideImage";
 import PokemonGrid from "./components/PokemonGrid";
 
 export default function PokedexPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [pokemon, setPokemon] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
-  // Carousel images auto rotation
-  const carouselImages = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  });
 
   // Fetch backend API
   const fetchPokemon = async (pageNum) => {
