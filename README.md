@@ -74,10 +74,10 @@ Used to fetch a list of Pokémon with pagination.
 
 ### Query Parameters
 
-| Parameter | Type   | Default | Description                |
-| --------- | ------ | ------- | -------------------------- |
-| `page`    | number | 1       | Page number to fetch       |
-| `limit`   | number | 36      | Number of Pokémon per page |
+| Parameter | Type    | Default | Description                |
+| --------- | ------- | ------- | -------------------------- |
+| `page`    | integer | 1       | Page number to fetch       |
+| `limit`   | integer | 36      | Number of Pokémon per page |
 
 **Example Request**:
 
@@ -116,10 +116,10 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
 | `pokemon.name`   | string  | Pokémon's name                                   |
 | `pokemon.image`  | string  | URL to Pokémon image                             |
 | `pokemon.types`  | array   | Pokémon types (may have multiple)                |
-| `pokemon.height` | number  | Height of Pokémon (in decimetres)                |
-| `pokemon.weight` | number  | Weight of Pokémon (in hectograms)                |
-| `page`           | number  | Current page number                              |
-| `limit`          | number  | Number of Pokémon per page                       |
+| `pokemon.height` | integer | Height of Pokémon (in decimetres)                |
+| `pokemon.weight` | integer | Weight of Pokémon (in hectograms)                |
+| `page`           | integer | Current page number                              |
+| `limit`          | integer | Number of Pokémon per page                       |
 | `hasMore`        | boolean | Indicates if more Pokémon are available to fetch |
 
 ### Error Response
