@@ -17,6 +17,7 @@ export default function PokemonGrid({
     <div className="pokemon-section">
       {/* Search bar*/}
       <div className="search-container">
+        <h1 className="pokedex-title">Pokédex</h1>
         <form onSubmit={handleSearch} className="search-form">
           <input
             type="text"

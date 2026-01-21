@@ -7,7 +7,7 @@ export default function StaticBanners() {
     <div className="static-banners">
       <div className="static-banner">
         <Image
-          src="/images/placeholder.svg"
+          src="/images/pokeball.jpg"
           alt="Static Banner 1"
           fill
           style={{ objectFit: "cover" }}
@@ -15,7 +15,7 @@ export default function StaticBanners() {
       </div>
       <div className="static-banner">
         <Image
-          src="/images/placeholder.svg"
+          src="/images/pokecards.jpg"
           alt="Static Banner 2"
           fill
           style={{ objectFit: "cover" }}

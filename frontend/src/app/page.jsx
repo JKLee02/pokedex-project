@@ -81,8 +81,9 @@ export default function PokedexPage() {
       <div className="middle-section">
         <div className="middle-grid">
           {/* Left Static Image */}
+
           <SideImage
-            src="/images/placeholder.svg"
+            src="/images/pokecards2.jpg"
             alt="Left side of static image"
           />
 

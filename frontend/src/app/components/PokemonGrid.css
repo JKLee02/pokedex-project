@@ -3,6 +3,10 @@
   width: 100%;
 }
 
+.pokedex-title {
+  margin-top: 0;
+}
+
 /* Search Bar */
 .search-container {
   position: sticky;
