@@ -3,20 +3,17 @@
 This is a Next.js Pokedex website that uses a Node.js/Express backend API that fetches Pokémon data from the PokéAPI.
 Features include search, load more, Pokémon types with coloured badges and a responsive UI with carousel and static banners.
 
-## Screenshots 
+## Screenshots
 
 ### Desktop View
 
 <img width="1886" height="849" alt="pokedex desktop view" src="https://github.com/user-attachments/assets/d61de83a-1199-44ad-b5ae-1419bbf30e03" />
-
 
 ### Mobile View
 
 <p align="center">
 <img width="386" height="739" alt="pokedex mobile view" src="https://github.com/user-attachments/assets/f4924c95-fac7-4419-9af0-205169c9f189" />
 </p>
-
-
 
 ## 1. Setup instructions
 
@@ -159,3 +156,9 @@ async function getPokemon() {
 }
 getPokemon();
 ```
+
+## Demo Link
+
+Note: The pokemon data may take a few minutes to appear due to the Render's free tier.
+
+https://pokedex-project-beryl-two.vercel.app/
