@@ -14,7 +14,7 @@ app.get("/api/pokemons", async (req, res) => {
   try {
     // Fetch the PokeAPI list
     const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
     );
 
     const results = response.data.results;
@@ -33,7 +33,7 @@ app.get("/api/pokemons", async (req, res) => {
           height: data.data.height,
           weight: data.data.weight,
         };
-      })
+      }),
     );
 
     // Return as a merged JSON response
@@ -50,7 +50,7 @@ app.get("/api/pokemons", async (req, res) => {
 });
 
 // Port listening
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () =>
-  console.log(`Backend running on http://localhost:${PORT}`)
+  console.log(`Backend running on http://localhost:${PORT}`),
 );

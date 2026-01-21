@@ -19,14 +19,16 @@ export default function PokedexPage() {
     setLoading(true);
     try {
       // Express.js backend endpoint from server.js
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
       const response = await fetch(
-        `http://localhost:3001/api/pokemons?page=${pageNum}&limit=36`
+        `${API_BASE_URL}/api/pokemons?page=${pageNum}&limit=36`,
       );
       const data = await response.json();
 
       if (data.pokemon && data.pokemon.length > 0) {
         setPokemon((prev) =>
-          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon]
+          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon],
         );
         setHasMore(data.hasMore);
       } else {
@@ -49,7 +51,7 @@ export default function PokedexPage() {
       setFilteredPokemon(pokemon);
     } else {
       const filtered = pokemon.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setFilteredPokemon(filtered);
     }
