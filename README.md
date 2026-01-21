@@ -159,6 +159,6 @@ getPokemon();
 
 ## Demo Link
 
-Note: The pokemon data may take a few minutes to appear due to the Render's free tier.
+Note: The pokemon data may take a few minutes when running it for the first time due to the Render's free tier.
 
 https://pokedex-project123.vercel.app/
