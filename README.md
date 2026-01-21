@@ -161,4 +161,4 @@ getPokemon();
 
 Note: The pokemon data may take a few minutes to appear due to the Render's free tier.
 
-https://pokedex-project-beryl-two.vercel.app/
+https://pokedex-project123.vercel.app/
