@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// GET API endpoint
+// GET API endpoint - List of Pokemons
 app.get("/api/pokemons", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 36;
@@ -21,10 +21,11 @@ app.get("/api/pokemons", async (req, res) => {
 
     // Fetch full details for each Pokémon
     const pokemonDetails = await Promise.all(
-      results.map(async (poke) => {
+      results.map(async (poke, index) => {
         const data = await axios.get(poke.url);
 
         return {
+          id: data.data.id,
           name: data.data.name,
           image:
             data.data.sprites.other?.["official-artwork"]?.front_default ??
@@ -32,6 +33,10 @@ app.get("/api/pokemons", async (req, res) => {
           types: data.data.types.map((t) => t.type.name),
           height: data.data.height,
           weight: data.data.weight,
+          abilities: data.data.abilities.map((a) => ({
+            name: a.ability.name,
+            is_hidden: a.is_hidden,
+          })),
         };
       }),
     );
@@ -46,6 +51,41 @@ app.get("/api/pokemons", async (req, res) => {
   } catch (error) {
     console.error("Error fetching Pokémon:", error.message);
     res.status(500).json({ error: "Failed to fetch Pokémon" });
+  }
+});
+
+// GET API endpoint - Single Pokemon details
+app.get("/api/pokemon/:name", async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    // Fetch Pokemon details from PokeAPI
+    const response = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${name}`,
+    );
+
+    const data = response.data;
+
+    // Format the Pokemon data
+    const pokemonDetails = {
+      id: data.id,
+      name: data.name,
+      image:
+        data.sprites.other?.["official-artwork"]?.front_default ??
+        data.sprites.front_default,
+      types: data.types.map((t) => t.type.name),
+      height: data.height, // in decimeters
+      weight: data.weight, // in hectograms
+      abilities: data.abilities.map((a) => ({
+        name: a.ability.name,
+        is_hidden: a.is_hidden,
+      })),
+    };
+
+    res.json(pokemonDetails);
+  } catch (error) {
+    console.error("Error fetching Pokemon details:", error.message);
+    res.status(500).json({ error: "Failed to fetch Pokemon details" });
   }
 });
 

@@ -71,6 +71,12 @@
 }
 
 /* Pokemon Card */
+.pokemon-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .pokemon-card {
   background: white;
   border: 1px solid #e5e7eb;

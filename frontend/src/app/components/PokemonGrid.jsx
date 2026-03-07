@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import "./PokemonGrid.css";
 import { typeColours } from "../utils/typeColours";
 
@@ -32,33 +33,39 @@ export default function PokemonGrid({
       {/* Pokemon grid */}
       <div className="pokemon-grid">
         {pokemon.map((poke) => (
-          <div key={poke.name} className="pokemon-card">
-            <div className="pokemon-content">
-              <Image
-                src={poke.image || "/images/placeholder.svg"}
-                alt={poke.name}
-                width={80}
-                height={80}
-              />
-              <div className="pokemon-info">
-                <h3 className="pokemon-name">{poke.name}</h3>
+          <Link
+            href={`/pokemon/${poke.name}`}
+            key={poke.name}
+            className="pokemon-card-link"
+          >
+            <div className="pokemon-card">
+              <div className="pokemon-content">
+                <Image
+                  src={poke.image || "/images/placeholder.svg"}
+                  alt={poke.name}
+                  width={80}
+                  height={80}
+                />
+                <div className="pokemon-info">
+                  <h3 className="pokemon-name">{poke.name}</h3>
 
-                <div className="pokemon-types">
-                  {poke.types?.map((type, idx) => (
-                    <span
-                      key={idx}
-                      className="type-badge"
-                      style={{
-                        backgroundColor: typeColours[type] || "#f3f4f6",
-                      }}
-                    >
-                      {type}
-                    </span>
-                  ))}
+                  <div className="pokemon-types">
+                    {poke.types?.map((type, idx) => (
+                      <span
+                        key={idx}
+                        className="type-badge"
+                        style={{
+                          backgroundColor: typeColours[type] || "#f3f4f6",
+                        }}
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
