@@ -1,72 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Carousel from "./components/Carousel";
 import StaticBanners from "./components/StaticBanners";
 import SideImage from "./components/SideImage";
 import PokemonGrid from "./components/PokemonGrid";
+import { usePokemon } from "./components/PokemonContext";
 
 export default function PokedexPage() {
-  const [pokemon, setPokemon] = useState([]);
-  const [filteredPokemon, setFilteredPokemon] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  // Fetch backend API
-  const fetchPokemon = async (pageNum) => {
-    setLoading(true);
-    try {
-      // Express.js backend endpoint from server.js
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-      const response = await fetch(
-        `${API_BASE_URL}/api/pokemons?page=${pageNum}&limit=36`,
-      );
-      const data = await response.json();
-
-      if (data.pokemon && data.pokemon.length > 0) {
-        setPokemon((prev) =>
-          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon],
-        );
-        setHasMore(data.hasMore);
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Error fetching Pokemon:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPokemon(page);
-  }, [page]);
-
-  // Search Query for Pokemons
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredPokemon(pokemon);
-    } else {
-      const filtered = pokemon.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setFilteredPokemon(filtered);
-    }
-  }, [searchQuery, pokemon]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-  };
-
-  // Load More button for pagination
-  const loadMore = () => {
-    if (!loading && hasMore) {
-      setPage((prev) => prev + 1);
-    }
-  };
+  const {
+    filteredPokemon,
+    searchQuery,
+    setSearchQuery,
+    loading,
+    hasMore,
+    handleSearch,
+    loadMore,
+  } = usePokemon();
 
   return (
     <div className="pokedex-container">
