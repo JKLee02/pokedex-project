@@ -98,20 +98,21 @@ export default function PokemonDetailPage() {
       {/* Main Content - Left and Right Sections */}
       <div className={styles.content}>
         {/* Left Section - Pokemon Image */}
-        <div className={styles.imageSection}>
+        <section className={styles.imageSection}>
           <div className={styles.imageWrapper}>
             <Image
               src={pokemon.image}
               alt={pokemon.name}
+              sizes="(max-width: 400px)"
               fill
               style={{ objectFit: "contain" }}
               priority
             />
           </div>
-        </div>
+        </section>
 
         {/* Right Section - Details */}
-        <div className={styles.detailsSection}>
+        <section className={styles.detailsSection}>
           {/* Types */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Type</h2>
@@ -160,7 +161,7 @@ export default function PokemonDetailPage() {
               ))}
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
