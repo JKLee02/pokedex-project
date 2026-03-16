@@ -37,6 +37,7 @@ export default function PokemonGrid({
             href={`/pokemon/${poke.name}`}
             key={poke.name}
             className="pokemon-card-link"
+            prefetch={false}
           >
             <div className="pokemon-card">
               <div className="pokemon-content">
