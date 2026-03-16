@@ -101,13 +101,14 @@ export default function PokemonDetailPage() {
         <section className={styles.imageSection}>
           <div className={styles.imageWrapper}>
             <Image
-              src={pokemon.image}
-              alt={pokemon.name}
-              sizes="(max-width: 400px)"
-              fill
-              style={{ objectFit: "contain" }}
-              priority
-            />
+               src={pokemon.image}
+               alt={pokemon.name}
+               sizes="(max-width: 400px)"
+               fill
+               style={{ objectFit: "contain" }}
+               priority
+               unoptimized
+             />
           </div>
         </section>
 
