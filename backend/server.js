@@ -5,10 +5,42 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+// In-memory cache configuration
+const cache = new Map();
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+function getCache(key) {
+  const item = cache.get(key);
+  if (!item) return null;
+
+  if (Date.now() - item.timestamp > CACHE_TTL) {
+    cache.delete(key);
+    return null;
+  }
+
+  return item.data;
+}
+
+function setCache(key, data) {
+  cache.set(key, {
+    data,
+    timestamp: Date.now()
+  });
+}
+
 // GET API endpoint - List of Pokemons
 app.get("/api/pokemons", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 36;
+  const cacheKey = `pokemons:page:${page}:limit:${limit}`;
+
+  // Check cache first
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    console.log(`Cache hit for ${cacheKey}`);
+    return res.json(cachedData);
+  }
+
   const offset = (page - 1) * limit;
 
   try {
@@ -42,12 +74,18 @@ app.get("/api/pokemons", async (req, res) => {
     );
 
     // Return as a merged JSON response
-    res.json({
+    const responseData = {
       pokemon: pokemonDetails,
       page,
       limit,
       hasMore: !!response.data.next,
-    });
+    };
+
+    // Store in cache
+    setCache(cacheKey, responseData);
+    console.log(`Cache set for ${cacheKey}`);
+
+    res.json(responseData);
   } catch (error) {
     console.error("Error fetching Pokémon:", error.message);
     res.status(500).json({ error: "Failed to fetch Pokémon" });
@@ -57,6 +95,14 @@ app.get("/api/pokemons", async (req, res) => {
 // GET API endpoint - Single Pokemon details
 app.get("/api/pokemon/:name", async (req, res) => {
   const { name } = req.params;
+  const cacheKey = `pokemon:${name}`;
+
+  // Check cache first
+  const cachedData = getCache(cacheKey);
+  if (cachedData) {
+    console.log(`Cache hit for ${cacheKey}`);
+    return res.json(cachedData);
+  }
 
   try {
     // Fetch Pokemon details from PokeAPI
@@ -81,6 +127,10 @@ app.get("/api/pokemon/:name", async (req, res) => {
         is_hidden: a.is_hidden,
       })),
     };
+
+    // Store in cache
+    setCache(cacheKey, pokemonDetails);
+    console.log(`Cache set for ${cacheKey}`);
 
     res.json(pokemonDetails);
   } catch (error) {
