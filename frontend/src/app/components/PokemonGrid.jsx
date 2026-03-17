@@ -12,6 +12,7 @@ export default function PokemonGrid({
   setSearchQuery,
   loadMore,
   loading,
+  initialLoad,
   hasMore,
 }) {
   return (
@@ -22,7 +23,7 @@ export default function PokemonGrid({
         <form onSubmit={handleSearch} className="search-form">
           <input
             type="text"
-            placeholder="Pokemon Name"
+            placeholder="Search Pokemon by name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -30,49 +31,59 @@ export default function PokemonGrid({
         </form>
       </div>
 
-      {/* Pokemon grid */}
-      <div className="pokemon-grid">
-        {pokemon.map((poke) => (
-          <Link
-            href={`/pokemon/${poke.name}`}
-            key={poke.name}
-            className="pokemon-card-link"
-            prefetch={false}
-          >
-            <div className="pokemon-card">
-              <div className="pokemon-content">
-                <Image
-                  src={poke.image || "/images/placeholder.svg"}
-                  alt={poke.name}
-                  width={80}
-                  height={80}
-                  unoptimized
-                />
-                <div className="pokemon-info">
-                  <h3 className="pokemon-name">{poke.name}</h3>
+      {/* Initial loading state */}
+      {initialLoad && (
+        <div className="loading-container">
+          <p className="loading-text">Loading all Pokemon...</p>
+        </div>
+      )}
 
-                  <div className="pokemon-types">
-                    {poke.types?.map((type, idx) => (
-                      <span
-                        key={idx}
-                        className="type-badge"
-                        style={{
-                          backgroundColor: typeColours[type] || "#f3f4f6",
-                        }}
-                      >
-                        {type}
-                      </span>
-                    ))}
+      {/* Pokemon grid */}
+      {!initialLoad && (
+        <div className="pokemon-grid">
+          {pokemon.map((poke) => (
+            <Link
+              href={`/pokemon/${poke.name}`}
+              key={poke.name}
+              className="pokemon-card-link"
+              prefetch={false}
+            >
+              <div className="pokemon-card">
+                <div className="pokemon-content">
+                  <Image
+                    src={poke.image || "/images/placeholder.svg"}
+                    alt={poke.name}
+                    width={80}
+                    height={80}
+                    loading="lazy"
+                    unoptimized
+                  />
+                  <div className="pokemon-info">
+                    <h3 className="pokemon-name">{poke.name}</h3>
+
+                    <div className="pokemon-types">
+                      {poke.types?.map((type, idx) => (
+                        <span
+                          key={idx}
+                          className="type-badge"
+                          style={{
+                            backgroundColor: typeColours[type] || "#f3f4f6",
+                          }}
+                        >
+                          {type}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Load More button */}
-      {hasMore && (
+      {!initialLoad && hasMore && pokemon.length > 0 && (
         <div className="load-more-container">
           <button
             onClick={loadMore}
@@ -85,11 +96,11 @@ export default function PokemonGrid({
       )}
 
       {/* Messages */}
-      {!hasMore && pokemon.length > 0 && (
-        <p className="message">No more Pokémon to load</p>
+      {!initialLoad && !hasMore && searchQuery.trim() === "" && pokemon.length > 0 && (
+        <p className="message">All Pokemon loaded!</p>
       )}
 
-      {pokemon.length === 0 && !loading && (
+      {!initialLoad && pokemon.length === 0 && (
         <p className="message">No Pokémon found</p>
       )}
     </div>

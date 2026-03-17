@@ -3,87 +3,88 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const PokemonContext = createContext();
+const DISPLAY_INCREMENT = 36;
 
 export function PokemonProvider({ children }) {
-  const [pokemon, setPokemon] = useState([]);
-  const [filteredPokemon, setFilteredPokemon] = useState([]);
+  const [allPokemon, setAllPokemon] = useState([]);
+  const [displayCount, setDisplayCount] = useState(DISPLAY_INCREMENT);
   const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch backend API
-  const fetchPokemon = async (pageNum) => {
-    setLoading(true);
-    try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+  useEffect(() => {
+    const fetchAllPokemon = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/pokemons?page=${pageNum}&limit=36`,
-      );
-      const data = await response.json();
+        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=1050`);
 
-      if (data.pokemon && data.pokemon.length > 0) {
-        setPokemon((prev) =>
-          pageNum === 1 ? data.pokemon : [...prev, ...data.pokemon],
+        if (!response.ok) {
+          throw new Error("Failed to fetch Pokemon");
+        }
+
+        const data = await response.json();
+        setAllPokemon(
+          (data.pokemon || []).map((p) => ({
+            ...p,
+            nameLower: p.name.toLowerCase(),
+          })),
         );
-        setHasMore(data.hasMore);
-      } else {
-        setHasMore(false);
+      } catch (error) {
+        console.error("Error fetching Pokemon:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+        setInitialLoad(false);
       }
-    } catch (error) {
-      console.error("Error fetching Pokemon:", error);
-    } finally {
-      setLoading(false);
+    };
+
+    fetchAllPokemon();
+  }, []);
+
+  useEffect(() => {
+    setDisplayCount(DISPLAY_INCREMENT);
+  }, [searchQuery]);
+
+  const filteredPokemon =
+    searchQuery.trim() === ""
+      ? allPokemon
+      : allPokemon.filter((p) =>
+          p.nameLower.includes(searchQuery.toLowerCase()),
+        );
+
+  const pokemonToDisplay =
+    searchQuery.trim() === ""
+      ? allPokemon.slice(0, displayCount)
+      : filteredPokemon.slice(0, displayCount);
+
+  const hasMore =
+    searchQuery.trim() === ""
+      ? displayCount < allPokemon.length
+      : displayCount < filteredPokemon.length;
+
+  const loadMore = () => {
+    if (hasMore) {
+      setDisplayCount((prev) => prev + DISPLAY_INCREMENT);
     }
   };
-
-  // Initial fetch on mount (only once)
-  useEffect(() => {
-    if (!isInitialized) {
-      fetchPokemon(page);
-      setIsInitialized(true);
-    }
-  }, [page, isInitialized]);
-
-  // Fetch more when page changes
-  useEffect(() => {
-    if (page > 1 && isInitialized) {
-      fetchPokemon(page);
-    }
-  }, [page, isInitialized]);
-
-  // Search Query for Pokemons
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredPokemon(pokemon);
-    } else {
-      const filtered = pokemon.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setFilteredPokemon(filtered);
-    }
-  }, [searchQuery, pokemon]);
 
   const handleSearch = (e) => {
     e.preventDefault();
   };
 
-  // Load More button for pagination
-  const loadMore = () => {
-    if (!loading && hasMore) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
   const value = {
-    pokemon,
-    filteredPokemon,
+    pokemon: pokemonToDisplay,
+    allPokemonCount: allPokemon.length,
+    filteredCount: filteredPokemon.length,
     searchQuery,
     setSearchQuery,
-    page,
     loading,
+    initialLoad,
+    error,
     hasMore,
     handleSearch,
     loadMore,
@@ -97,7 +98,7 @@ export function PokemonProvider({ children }) {
 export function usePokemon() {
   const context = useContext(PokemonContext);
   if (!context) {
-    throw new Error("usePokemon must be used within a PokemonProvider");
+    throw new Error("usePokemon must be used within PokemonProvider");
   }
   return context;
 }

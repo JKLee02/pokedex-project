@@ -7,10 +7,11 @@ import { usePokemon } from "./components/PokemonContext";
 
 export default function PokedexPage() {
   const {
-    filteredPokemon,
+    pokemon,
     searchQuery,
     setSearchQuery,
     loading,
+    initialLoad,
     hasMore,
     handleSearch,
     loadMore,
@@ -29,12 +30,13 @@ export default function PokedexPage() {
       {/* Middle Section - Pokemon Grid */}
       <div className="middle-section">
         <PokemonGrid
-          pokemon={filteredPokemon}
+          pokemon={pokemon}
           handleSearch={handleSearch}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           loadMore={loadMore}
           loading={loading}
+          initialLoad={initialLoad}
           hasMore={hasMore}
         />
       </div>
