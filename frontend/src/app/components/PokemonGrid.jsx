@@ -55,7 +55,7 @@ export default function PokemonGrid({
                     alt={poke.name}
                     width={80}
                     height={80}
-                    unoptimized
+                    loading="lazy"
                   />
                   <div className="pokemon-info">
                     <h3 className="pokemon-name">{poke.name}</h3>
@@ -95,9 +95,10 @@ export default function PokemonGrid({
       )}
 
       {/* Messages */}
-      {!initialLoad && !hasMore && searchQuery.trim() === "" && pokemon.length > 0 && (
-        <p className="message">All Pokemon loaded!</p>
-      )}
+      {!initialLoad &&
+        !hasMore &&
+        searchQuery.trim() === "" &&
+        pokemon.length > 0 && <p className="message">All Pokemon loaded!</p>}
 
       {!initialLoad && pokemon.length === 0 && (
         <p className="message">No Pokémon found</p>

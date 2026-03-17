@@ -107,7 +107,6 @@ export default function PokemonDetailPage() {
               fill
               style={{ objectFit: "contain" }}
               priority
-              unoptimized
             />
           </div>
         </section>
