@@ -55,7 +55,6 @@ export default function PokemonGrid({
                     alt={poke.name}
                     width={80}
                     height={80}
-                    loading="lazy"
                     unoptimized
                   />
                   <div className="pokemon-info">
