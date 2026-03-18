@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const PokemonContext = createContext();
-const DISPLAY_INCREMENT = 36;
+const DISPLAY_INCREMENT = 24;
 
 export function PokemonProvider({ children }) {
   const [allPokemon, setAllPokemon] = useState([]);
@@ -22,7 +22,7 @@ export function PokemonProvider({ children }) {
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=36`);
+        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=24`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Pokemon");
