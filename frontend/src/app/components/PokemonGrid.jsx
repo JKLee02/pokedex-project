@@ -92,17 +92,13 @@ export default function PokemonGrid({
             onClick={handleDropdownToggle}
           >
             <span className="filter-label">Advanced Search</span>
-            <svg
+            <Image
+              src={"drop-down.svg"}
+              width={20}
+              height={20}
+              alt="drop-down"
               className={`filter-arrow ${isDropdownOpen ? "open" : ""}`}
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
+            />
           </button>
           <div className={`type-dropdown ${isDropdownOpen ? "open" : ""}`}>
             <p className="type-title">Filter by Types</p>
