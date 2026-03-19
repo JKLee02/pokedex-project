@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
 
 const PokemonContext = createContext();
 const DISPLAY_INCREMENT = 24;
@@ -13,6 +13,7 @@ export function PokemonProvider({ children }) {
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState(null);
   const [searchReady, setSearchReady] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   // Initial load - fetch first 36 Pokemon for instant display
   useEffect(() => {
@@ -80,22 +81,42 @@ export function PokemonProvider({ children }) {
 
   useEffect(() => {
     setDisplayCount(DISPLAY_INCREMENT);
-  }, [searchQuery]);
+  }, [searchQuery, selectedTypes]);
 
-  const filteredPokemon =
-    searchQuery.trim() === ""
-      ? allPokemon
-      : allPokemon.filter((p) =>
-          p.nameLower.includes(searchQuery.toLowerCase()),
-        );
+  const toggleType = (type) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    );
+  };
+
+  const clearTypes = () => {
+    setSelectedTypes([]);
+  };
+
+  const filteredPokemon = useMemo(() => {
+    let results = allPokemon;
+
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase();
+      results = results.filter((p) => p.nameLower.includes(query));
+    }
+
+    if (selectedTypes.length > 0) {
+      results = results.filter((p) =>
+        selectedTypes.every((type) => p.types?.includes(type))
+      );
+    }
+
+    return results;
+  }, [allPokemon, searchQuery, selectedTypes]);
 
   const pokemonToDisplay =
-    searchQuery.trim() === ""
+    searchQuery.trim() === "" && selectedTypes.length === 0
       ? allPokemon.slice(0, displayCount)
       : filteredPokemon.slice(0, displayCount);
 
   const hasMore =
-    searchQuery.trim() === ""
+    searchQuery.trim() === "" && selectedTypes.length === 0
       ? displayCount < allPokemon.length
       : displayCount < filteredPokemon.length;
 
@@ -122,6 +143,9 @@ export function PokemonProvider({ children }) {
     handleSearch,
     loadMore,
     searchReady,
+    selectedTypes,
+    toggleType,
+    clearTypes,
   };
 
   return (

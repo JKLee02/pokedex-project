@@ -22,6 +22,7 @@
   display: flex;
   max-width: 700px;
   margin: 0 auto;
+  position: relative;
 }
 
 .search-input {
@@ -37,21 +38,6 @@
 .search-input:focus {
   border-color: black;
   border-width: 1px;
-}
-
-.search-button {
-  background-color: #f97316;
-  color: white;
-  padding: 0.625rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-button:hover {
-  background-color: #ea580c;
 }
 
 /* Pokemon Grid */
@@ -181,4 +167,147 @@
 .loading-text {
   font-size: 1.1rem;
   color: #6b7280;
+}
+
+/* Search Wrapper */
+.search-wrapper {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Filter Toggle Button */
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 1rem auto 0;
+  padding: 0.35rem 0.75rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.filter-toggle-btn:hover {
+  background: #f3f4f6;
+}
+
+.filter-label {
+  font-family: "Rubik", sans-serif;
+}
+
+.filter-arrow {
+  transition: transform 0.3s ease;
+}
+
+.filter-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Type Dropdown */
+.type-dropdown {
+  position: relative;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  margin-top: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    padding 0.3s ease;
+  padding: 0;
+}
+
+.type-dropdown.open {
+  max-height: 500px;
+  opacity: 1;
+  padding: 1rem;
+}
+
+.type-title {
+  margin-top: 0;
+  text-align: center;
+}
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 480px) {
+  .type-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.type-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.type-checkbox input {
+  display: none;
+}
+
+.type-checkbox:hover {
+  transform: scale(1.05);
+}
+
+.type-checkbox.selected {
+  border-color: rgba(0, 0, 0, 0.7);
+  font-weight: 700;
+}
+
+.dropdown-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.clear-btn,
+.apply-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clear-btn {
+  border: 1px solid black;
+  background: #ffffcf;
+}
+
+.clear-btn:hover {
+  background: #ffff9f;
+}
+
+.apply-btn {
+  border: none;
+  background: #fa7658;
+  color: white;
+}
+
+.apply-btn:hover {
+  background: #ff5832;
 }

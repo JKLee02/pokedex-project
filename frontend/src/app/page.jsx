@@ -15,6 +15,9 @@ export default function PokedexPage() {
     hasMore,
     handleSearch,
     loadMore,
+    selectedTypes,
+    toggleType,
+    clearTypes,
   } = usePokemon();
 
   return (
@@ -38,6 +41,9 @@ export default function PokedexPage() {
           loading={loading}
           initialLoad={initialLoad}
           hasMore={hasMore}
+          selectedTypes={selectedTypes}
+          toggleType={toggleType}
+          clearTypes={clearTypes}
         />
       </div>
     </div>
