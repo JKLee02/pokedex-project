@@ -59,9 +59,7 @@ app.get("/api/pokemons", async (req, res) => {
         return {
           id: data.data.id,
           name: data.data.name,
-          image:
-            data.data.sprites.other?.["official-artwork"]?.front_default ??
-            data.data.sprites.front_default, // fallback image
+          image: data.data.sprites.front_default,
           types: data.data.types.map((t) => t.type.name),
           height: data.data.height,
           weight: data.data.weight,

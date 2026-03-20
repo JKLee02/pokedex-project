@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, useMemo } from "react";
 
 const PokemonContext = createContext();
 const DISPLAY_INCREMENT = 24;
+const INITIAL_LOAD_LIMIT = 200;
 
 export function PokemonProvider({ children }) {
   const [allPokemon, setAllPokemon] = useState([]);
@@ -12,10 +13,9 @@ export function PokemonProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState(null);
-  const [searchReady, setSearchReady] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState([]);
 
-  // Initial load - fetch first 36 Pokemon for instant display
+  // Initial load - fetch Pokemon for display
   useEffect(() => {
     const fetchInitialPokemon = async () => {
       setLoading(true);
@@ -23,7 +23,7 @@ export function PokemonProvider({ children }) {
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=24`);
+        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=${INITIAL_LOAD_LIMIT}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Pokemon");
@@ -47,37 +47,6 @@ export function PokemonProvider({ children }) {
 
     fetchInitialPokemon();
   }, []);
-
-  // Background fetch - load all Pokemon for search
-  useEffect(() => {
-    const fetchAllPokemon = async () => {
-      try {
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=1050`);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch all Pokemon");
-        }
-
-        const data = await response.json();
-        setAllPokemon(
-          (data.pokemon || []).map((p) => ({
-            ...p,
-            nameLower: p.name.toLowerCase(),
-          })),
-        );
-        setSearchReady(true);
-      } catch (error) {
-        console.error("Error fetching all Pokemon:", error);
-      }
-    };
-
-    // Only run after initial load is complete
-    if (!initialLoad) {
-      fetchAllPokemon();
-    }
-  }, [initialLoad]);
 
   useEffect(() => {
     setDisplayCount(DISPLAY_INCREMENT);
@@ -142,7 +111,6 @@ export function PokemonProvider({ children }) {
     hasMore,
     handleSearch,
     loadMore,
-    searchReady,
     selectedTypes,
     toggleType,
     clearTypes,

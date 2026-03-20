@@ -153,6 +153,7 @@ export default function PokemonGrid({
                     width={80}
                     height={80}
                     loading="lazy"
+                    unoptimized
                   />
                   <div className="pokemon-info">
                     <h3 className="pokemon-name">{poke.name}</h3>
