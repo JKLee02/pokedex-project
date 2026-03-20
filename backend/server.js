@@ -24,8 +24,56 @@ function getCache(key) {
 function setCache(key, data) {
   cache.set(key, {
     data,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
+}
+
+// Helper to delay between batches
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Helper to fetch Pokemon details in batches
+async function fetchPokemonDetailsBatched(
+  results,
+  batchSize = 20,
+  delayMs = 50,
+) {
+  const allDetails = [];
+
+  for (let i = 0; i < results.length; i += batchSize) {
+    const batch = results.slice(i, i + batchSize);
+
+    const batchDetails = await Promise.all(
+      batch.map(async (poke) => {
+        try {
+          const { data } = await axios.get(poke.url);
+          return {
+            id: data.id,
+            name: data.name,
+            image: data.sprites.front_default,
+            types: data.types.map((t) => t.type.name),
+            height: data.height,
+            weight: data.weight,
+            abilities: data.abilities.map((a) => ({
+              name: a.ability.name,
+              is_hidden: a.is_hidden,
+            })),
+          };
+        } catch (err) {
+          console.error(`Error fetching ${poke.name}:`, err.message);
+          return null;
+        }
+      }),
+    );
+
+    allDetails.push(...batchDetails.filter((p) => p !== null));
+
+    // Add delay between batches (except for last batch)
+    if (i + batchSize < results.length) {
+      await delay(delayMs);
+    }
+  }
+
+  return allDetails;
 }
 
 // GET API endpoint - List of Pokemons
@@ -51,25 +99,8 @@ app.get("/api/pokemons", async (req, res) => {
 
     const results = response.data.results;
 
-    // Fetch full details for each Pokémon
-    const pokemonDetails = await Promise.all(
-      results.map(async (poke, index) => {
-        const data = await axios.get(poke.url);
-
-        return {
-          id: data.data.id,
-          name: data.data.name,
-          image: data.data.sprites.front_default,
-          types: data.data.types.map((t) => t.type.name),
-          height: data.data.height,
-          weight: data.data.weight,
-          abilities: data.data.abilities.map((a) => ({
-            name: a.ability.name,
-            is_hidden: a.is_hidden,
-          })),
-        };
-      }),
-    );
+    // Fetch full details for each Pokémon in batches
+    const pokemonDetails = await fetchPokemonDetailsBatched(results, 20, 100);
 
     // Return as a merged JSON response
     const responseData = {

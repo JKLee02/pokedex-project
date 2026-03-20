@@ -4,7 +4,6 @@ import { createContext, useContext, useState, useEffect, useMemo } from "react";
 
 const PokemonContext = createContext();
 const DISPLAY_INCREMENT = 24;
-const INITIAL_LOAD_LIMIT = 200;
 
 export function PokemonProvider({ children }) {
   const [allPokemon, setAllPokemon] = useState([]);
@@ -23,7 +22,7 @@ export function PokemonProvider({ children }) {
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=${INITIAL_LOAD_LIMIT}`);
+        const response = await fetch(`${API_BASE_URL}/api/pokemons?limit=1050`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Pokemon");
@@ -54,7 +53,7 @@ export function PokemonProvider({ children }) {
 
   const toggleType = (type) => {
     setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
 
@@ -72,7 +71,7 @@ export function PokemonProvider({ children }) {
 
     if (selectedTypes.length > 0) {
       results = results.filter((p) =>
-        selectedTypes.every((type) => p.types?.includes(type))
+        selectedTypes.every((type) => p.types?.includes(type)),
       );
     }
 
