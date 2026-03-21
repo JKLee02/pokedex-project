@@ -136,18 +136,18 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
 
 ### Response fields
 
-| Field            | Type    | Description                                      |
-| ---------------- | ------- | ------------------------------------------------ |
-| `pokemon`        | array   | List of Pokémon objects                          |
-| `pokemon.name`   | string  | Pokémon's name                                   |
-| `pokemon.image`  | string  | URL to Pokémon image                             |
-| `pokemon.types`  | array   | Pokémon types (may have multiple)                |
-| `pokemon.height` | integer | Height of Pokémon (in decimetres)                |
-| `pokemon.weight` | integer | Weight of Pokémon (in hectograms)                |
-| `abilities`      | array   | Abilities of Pokémon (includes hidden abilities) |
-| `page`           | integer | Current page number                              |
-| `limit`          | integer | Number of Pokémon per page                       |
-| `hasMore`        | boolean | Indicates if more Pokémon are available to fetch |
+| Field               | Type    | Description                                      |
+| ------------------- | ------- | ------------------------------------------------ |
+| `pokemon`           | array   | List of Pokémon objects                          |
+| `pokemon.name`      | string  | Pokémon's name                                   |
+| `pokemon.image`     | string  | URL to Pokémon image                             |
+| `pokemon.types`     | array   | Pokémon types (may have multiple)                |
+| `pokemon.height`    | integer | Height of Pokémon (in decimetres)                |
+| `pokemon.weight`    | integer | Weight of Pokémon (in hectograms)                |
+| `pokemon.abilities` | array   | Abilities of Pokémon (includes hidden abilities) |
+| `page`              | integer | Current page number                              |
+| `limit`             | integer | Number of Pokémon per page                       |
+| `hasMore`           | boolean | Indicates if more Pokémon are available to fetch |
 
 ### Error Response
 
