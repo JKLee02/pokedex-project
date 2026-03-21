@@ -11,7 +11,9 @@ Features include search, load more, Pokémon types with coloured badges and a re
 
 ### Mobile View
 
-![pokedex mobile view](./screenshots/pokedex-mobile-view.PNG)
+<p align="center">
+  <img src="./screenshots/pokedex-mobile-view.PNG" alt="pokedex mobile view" width="400">
+</p>
 
 ### Individual Pokemon Page
 
