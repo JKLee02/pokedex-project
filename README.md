@@ -7,13 +7,15 @@ Features include search, load more, Pokémon types with coloured badges and a re
 
 ### Desktop View
 
-<img width="1886" height="849" alt="pokedex desktop view" src="https://github.com/user-attachments/assets/d61de83a-1199-44ad-b5ae-1419bbf30e03" />
+![pokedex desktop view](./screenshots/pokedex-desktop-view.PNG)
 
 ### Mobile View
 
-<p align="center">
-<img width="386" height="739" alt="pokedex mobile view" src="https://github.com/user-attachments/assets/f4924c95-fac7-4419-9af0-205169c9f189" />
-</p>
+![pokedex mobile view](./screenshots/pokedex-mobile-view.PNG)
+
+### Individual Pokemon Page
+
+![pokedex individual pokemon page](./screenshots/pokedex-individual-pokemon-page.PNG)
 
 ## 1. Setup instructions
 
@@ -111,6 +113,16 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
       ],
       "height": 7,
       "weight": 69
+      "abilities": [
+        {
+          "name": "overgrow",
+          "is_hidden": false
+        },
+        {
+          "name": "chlorophyll",
+          "is_hidden": true
+        }
+      ]
     },
     ...
   ],
@@ -130,6 +142,7 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
 | `pokemon.types`  | array   | Pokémon types (may have multiple)                |
 | `pokemon.height` | integer | Height of Pokémon (in decimetres)                |
 | `pokemon.weight` | integer | Weight of Pokémon (in hectograms)                |
+| `abilities`      | array   | Abilities of Pokémon (includes hidden abilities) |
 | `page`           | integer | Current page number                              |
 | `limit`          | integer | Number of Pokémon per page                       |
 | `hasMore`        | boolean | Indicates if more Pokémon are available to fetch |
