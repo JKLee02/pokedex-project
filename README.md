@@ -10,8 +10,9 @@ Features include search, load more, Pokémon types with coloured badges and a re
 ![pokedex desktop view](./screenshots/pokedex-desktop-view.PNG)
 
 ### Mobile View
-
+<p align="center">
 ![pokedex mobile view](./screenshots/pokedex-mobile-view.PNG)
+</p>
 
 ### Individual Pokemon Page
 
