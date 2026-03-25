@@ -1,7 +1,14 @@
 # Pokedex Project
 
 This is a Next.js Pokedex website that uses a Node.js/Express backend API that fetches Pokémon data from the PokéAPI.
-Features include search, load more, Pokémon types with coloured badges and a responsive UI with carousel and static banners.
+
+## Features
+
+- **Search By Name** - Search Pokémon by name
+- **Advanced Type Filter** - Filter Pokémon by type(s) with the "Advanced Search" dropdown
+- **Load More Pagination** - Load Pokémon progressively with "Load More" button
+- **Responsive UI** - Mobile-friendly design with carousel and static banners
+- **Pokémon Details** - View each Pokémon info including name, types, height, weight, and abilities
 
 ## Screenshots
 
@@ -19,76 +26,63 @@ Features include search, load more, Pokémon types with coloured badges and a re
 
 ![pokedex individual pokemon page](./screenshots/pokedex-individual-pokemon-page.PNG)
 
-## 1. Setup instructions
+## Prerequisites
 
-- Make sure that you already have **Git** and **Node.js** (this includes **npm**) installed on your computer to clone and run this application on your device.
+- **Git** - for cloning the repository
+- **Node.js** (v18 or higher) - includes npm
 
-  ## 1. Clone the repository
+## Setup Instructions
 
-  ```
-  git clone https://github.com/JKLee02/pokedex-project.git
-  ```
+### 1. Clone the repository
 
-  ## 2. Go into the repository
-
-  ```
-  cd pokedex-project
-  ```
-
-  ## Frontend
-
-  ### 1. Install the dependencies for frontend
-
-  ```
-  cd frontend
-  npm install
-  ```
-
-  ### 2. Run the development server
-
-  ```
-  npm run dev
-  ```
-
-  ## Backend
-
-  ### 1. Install the dependencies for backend
-
-  ```
-  cd backend
-  npm install
-  ```
-
-  ### 2. Start the backend server
-
-  ```
-  node server.js
-  ```
-
-## 2. API Documentation
-
-## Overview
-
-The Pokedex backend API provides Pokémon data fetched from the [PokéAPI](https://pokeapi.co/).
-It supports pagination and returns Pokémon details including name, image, types, height, and weight.
-
-The API is then utilized by the Next.js frontend to display Pokémon with search and load more functionality.
-
-**Base URL**
-
-```
-http://localhost:3001/api
+```bash
+git clone https://github.com/JKLee02/pokedex-project.git
+cd pokedex-project
 ```
 
-## Endpoint
+### 2. Setup Backend
 
-Used to fetch a list of Pokémon with pagination.
+```bash
+cd backend
+npm install
+node server.js
+```
+
+The backend will run on `http://localhost:3001`
+
+### 3. Setup Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will run on `http://localhost:3000`
+
+### 4. Environment Variables
+
+Create a `.env.local` file in the `frontend` directory:
 
 ```
-GET /pokemons
+NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
-### Query Parameters
+## API Documentation
+
+### Overview
+
+The Pokedex backend API provides Pokémon data fetched from the [PokéAPI](https://pokeapi.co/). It supports pagination and returns Pokémon details including name, image, types, height, weight, and abilities.
+
+**Base URL**: `http://localhost:3001/api`
+
+---
+
+### GET /pokemons
+
+Fetch a list of Pokémon with pagination.
+
+**Query Parameters**
 
 | Parameter | Type    | Default | Description                |
 | --------- | ------- | ------- | -------------------------- |
@@ -97,36 +91,26 @@ GET /pokemons
 
 **Example Request**
 
-```
+```bash
 GET http://localhost:3001/api/pokemons?page=1&limit=36
 ```
 
-**Successful Response in JSON**
+**Successful Response**
 
-```
+```json
 {
   "pokemon": [
     {
       "name": "bulbasaur",
-      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-      "types": [
-        "grass",
-        "poison"
-      ],
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+      "types": ["grass", "poison"],
       "height": 7,
-      "weight": 69
+      "weight": 69,
       "abilities": [
-        {
-          "name": "overgrow",
-          "is_hidden": false
-        },
-        {
-          "name": "chlorophyll",
-          "is_hidden": true
-        }
+        { "name": "overgrow", "is_hidden": false },
+        { "name": "chlorophyll", "is_hidden": true }
       ]
-    },
-    ...
+    }
   ],
   "page": 1,
   "limit": 36,
@@ -134,24 +118,67 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
 }
 ```
 
-### Response fields
+**Response Fields**
 
 | Field               | Type    | Description                                      |
 | ------------------- | ------- | ------------------------------------------------ |
 | `pokemon`           | array   | List of Pokémon objects                          |
 | `pokemon.name`      | string  | Pokémon's name                                   |
-| `pokemon.image`     | string  | URL to Pokémon image                             |
+| `pokemon.image`     | string  | URL to Pokémon sprite image                      |
 | `pokemon.types`     | array   | Pokémon types (may have multiple)                |
-| `pokemon.height`    | integer | Height of Pokémon (in decimetres)                |
+| `pokemon.height`    | integer | Height of Pokémon (in decimeters)                |
 | `pokemon.weight`    | integer | Weight of Pokémon (in hectograms)                |
 | `pokemon.abilities` | array   | Abilities of Pokémon (includes hidden abilities) |
 | `page`              | integer | Current page number                              |
 | `limit`             | integer | Number of Pokémon per page                       |
 | `hasMore`           | boolean | Indicates if more Pokémon are available to fetch |
 
+---
+
+### GET /pokemon/:name
+
+Fetch details for a single Pokémon by name.
+
+**Example Request**
+
+```bash
+GET http://localhost:3001/api/pokemon/bulbasaur
+```
+
+**Successful Response**
+
+```json
+{
+  "id": 1,
+  "name": "bulbasaur",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+  "types": ["grass", "poison"],
+  "height": 7,
+  "weight": 69,
+  "abilities": [
+    { "name": "overgrow", "is_hidden": false },
+    { "name": "chlorophyll", "is_hidden": true }
+  ]
+}
+```
+
+**Response Fields**
+
+| Field       | Type    | Description                           |
+| ----------- | ------- | ------------------------------------- |
+| `id`        | integer | Pokémon's ID number                   |
+| `name`      | string  | Pokémon's name                        |
+| `image`     | string  | URL to Pokémon official artwork       |
+| `types`     | array   | Pokémon types (may have multiple)     |
+| `height`    | integer | Height of Pokémon (in decimeters)     |
+| `weight`    | integer | Weight of Pokémon (in hectograms)     |
+| `abilities` | array   | Abilities (includes hidden abilities) |
+
+---
+
 ### Error Response
 
-```
+```json
 {
   "error": "Failed to fetch Pokémon"
 }
@@ -159,10 +186,12 @@ GET http://localhost:3001/api/pokemons?page=1&limit=36
 
 ### Example Usage (in JavaScript)
 
-```
+```javascript
 async function getPokemon() {
   try {
-    const response = await fetch('http://localhost:3001/api/pokemons?page=1&limit=36');
+    const response = await fetch(
+      "http://localhost:3001/api/pokemons?page=1&limit=36",
+    );
     const data = await response.json();
     console.log(data.pokemon);
   } catch (error) {
@@ -172,8 +201,8 @@ async function getPokemon() {
 getPokemon();
 ```
 
-## Demo Link
+## Demo
 
-Note: The pokemon data may take a few minutes to appear when running it for the first time due to the Render's free tier.
+**Live Demo**: https://pokedex-project123.vercel.app/
 
-https://pokedex-project123.vercel.app/
+> **Note**: The Pokémon data may take a few minutes to appear on first load due to Render's free tier cold start.
